@@ -1,0 +1,11 @@
+.gradle/
+build/
+app/build/
+bin/
+obj/
+*.user
+*.apk
+*.aab
+*.exe
+*.dll
+*.pdb
