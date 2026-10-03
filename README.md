@@ -31,18 +31,31 @@ docs/PRODUCT_SPEC.md                    产品与测试说明
 
 ## 快速运行：Windows + Android
 
-1. Windows 安装 ViGEmBus。由于 ViGEmBus 已归档，推荐同时关注 Nefarius 的继任项目；现有 ViGEmBus 仍可用于兼容多数工具。
-2. 安装 .NET 8 SDK。
-3. 进入 `desktop/windows/PadMax.Server.Windows`：
+普通用户只需要三步：
+
+1. 双击 `ViGEmBus_1.22.0_x64_x86_arm64.exe` 安装虚拟手柄驱动（首次使用，Windows 端需要管理员权限）。
+2. 启动 Windows 服务端（发布后直接双击 EXE；开发时）：
 
 ```powershell
+cd desktop/windows/PadMax.Server.Windows
 dotnet restore
 dotnet run -c Release
 ```
 
-4. 用 Android Studio 打开 `android/PadMax`，连接 Android 手机，运行 App。
-5. 在 App 中点击“发现服务器”，选择服务器，输入 PC 端显示的 6 位配对码，点击“连接局域网”。
-6. 打开 Windows “游戏控制器”面板或 Steam 测试手柄输入。
+3. 电脑会弹出一个窗口，显示大二维码和“手机打开 PadMax，扫码即可开始游戏”。
+4. 手机与电脑连同一个 Wi‑Fi，打开 PadMax App。App 会**自动**依次尝试 USB 数据线、局域网发现；连不上时会**自动**弹出扫码界面。
+5. 用 App 扫电脑窗口里的二维码，立即进入手柄界面（部分手机用系统相机扫也能自动跳回 App）。
+
+无需手动输入 IP、端口或配对码。若电脑没装驱动，窗口里会有一个“一键安装虚拟手柄驱动”按钮。
+
+面向开发者/调试的开关：
+
+```powershell
+dotnet run -c Release -- --nogui   # 命令行模式，打印 ASCII 二维码，便于无界面环境
+dotnet run -c Release -- --plain   # 局域网明文（仅本地可信网络测试用）
+```
+
+6. 打开 Windows“游戏控制器”面板或 Steam 测试手柄输入。
 
 ## 快速运行：Linux + Android
 
@@ -62,3 +75,9 @@ Linux 版本默认使用明文局域网 UDP，适合本地可信网络。需要�
 - Windows 安装器：自动检测 ViGEmBus/继任驱动、安装依赖、添加防火墙规则。
 - QA：100+ 游戏兼容性测试、蓝牙 HID 机型兼容矩阵、延迟测试报告。
 - UI/UX：布局编辑器、云端布局分享、可视化延迟曲线、手柄皮肤商店。
+
+## 开源许可证
+
+本项目采用 [BSD 3-Clause](LICENSE) 许可证，任何人可免费使用、修改和分发（含商业用途），只需保留版权声明。
+
+> 第三方组件：仓库内附带的 ViGEmBus 驱动安装包与 `vigem.nupkg` 遵循其各自的开源许可证（ViGEmBus 为 BSD-3-Clause），版权归原作者所有。

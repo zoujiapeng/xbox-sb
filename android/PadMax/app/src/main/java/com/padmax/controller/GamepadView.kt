@@ -45,7 +45,7 @@ class GamepadView @JvmOverloads constructor(
     private val fill = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL; color = Color.argb(48, 0, 229, 255) }
     private val stroke = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE; strokeWidth = 4f; color = Color.argb(190, 0, 229, 255) }
     private val active = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL; color = Color.argb(110, 0, 229, 255) }
-    private val text = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE; textAlign = Paint.Align.CENTER; textSize = 32f; fakeBoldText = true }
+    private val text = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE; textAlign = Paint.Align.CENTER; textSize = 32f; isFakeBoldText = true }
     private val smallText = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.argb(220,255,255,255); textAlign = Paint.Align.CENTER; textSize = 23f }
 
     init {

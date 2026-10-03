@@ -1,4 +1,5 @@
 using Nefarius.ViGEm.Client;
+using Nefarius.ViGEm.Client.Exceptions;
 using Nefarius.ViGEm.Client.Targets;
 using Nefarius.ViGEm.Client.Targets.Xbox360;
 
@@ -6,19 +7,36 @@ namespace PadMax.Server.Windows;
 
 public sealed class ControllerHub : IDisposable
 {
-    private readonly ViGEmClient client = new();
+    private readonly ViGEmClient? client;
+    private readonly bool driverAvailable;
     private readonly Dictionary<ulong, Slot> slots = new();
     private readonly object gate = new();
     private const int MaxControllers = 4;
 
+    public ControllerHub()
+    {
+        try
+        {
+            client = new ViGEmClient();
+            driverAvailable = true;
+        }
+        catch (VigemBusNotFoundException)
+        {
+            driverAvailable = false;
+            Console.WriteLine("[controller] ViGEmBus is not installed; running protocol-only test mode.");
+        }
+    }
+
     public void Update(ulong clientId, InputState state)
     {
+        if (!driverAvailable) return;
+
         lock (gate)
         {
             if (!slots.TryGetValue(clientId, out var slot))
             {
                 if (slots.Count >= MaxControllers) return;
-                var pad = client.CreateXbox360Controller();
+                var pad = client!.CreateXbox360Controller();
                 pad.AutoSubmitReport = false;
                 pad.Connect();
                 slot = new Slot(pad, slots.Count + 1);
@@ -82,7 +100,7 @@ public sealed class ControllerHub : IDisposable
         {
             foreach (var s in slots.Values) s.Controller.Disconnect();
             slots.Clear();
-            client.Dispose();
+            client?.Dispose();
         }
     }
 
